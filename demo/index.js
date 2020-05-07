@@ -9,7 +9,7 @@ window.addEventListener("load", function () {
     '<rect x="0" y="0" width="100" height="100" fill="#ddd" />';
 
   let point = {
-    p: new KSphere(3),
+    p: new KSphere(3, 3),
     d: (() => {
       let d = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       d.setAttribute("r", 3);
@@ -24,7 +24,7 @@ window.addEventListener("load", function () {
   };
 
   let point2 = {
-    p: new KSphere(3),
+    p: new KSphere(3, 3),
     d: (() => {
       let d = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       d.setAttribute("r", 3);
@@ -48,6 +48,10 @@ window.addEventListener("load", function () {
   point.synchronize();
   point2.synchronize();
 
+  let kworld = new KWorld();
+  kworld.add(point.p);
+  kworld.add(point2.p);
+
   let last = performance.now();
 
   requestAnimationFrame(tick);
@@ -56,11 +60,7 @@ window.addEventListener("load", function () {
     requestAnimationFrame(tick);
     let dt = now - last;
     last = now;
-    point.p.update(dt / 1000);
-    point2.p.update(dt / 1000);
-    if (DetectCollision(point.p, point2.p)) {
-      Collision(point.p, point2.p);
-    }
+    kworld.update(dt / 1000);
     point.synchronize();
     point2.synchronize();
   }
