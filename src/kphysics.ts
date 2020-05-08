@@ -1,3 +1,41 @@
+class KQuaternion {
+  w: number;
+  x: number;
+  y: number;
+  z: number;
+  constructor(w: number = 0, x: number = 0, y: number = 0, z: number = 0) {
+    this.w = w;
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+  set(w: number, x: number, y: number, z: number) {
+    this.w = w;
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+  static multiple(a: number, kq: KQuaternion): KQuaternion {
+    return new KQuaternion(a * kq.w, a * kq.x, a * kq.y, a * kq.z);
+  }
+  static sum(kq1: KQuaternion, kq2: KQuaternion): KQuaternion {
+    return new KQuaternion(
+      kq1.w + kq2.w,
+      kq1.x + kq2.x,
+      kq1.y + kq2.y,
+      kq1.z + kq2.z
+    );
+  }
+  static difference(kq1: KQuaternion, kq2: KQuaternion): KQuaternion {
+    return new KQuaternion(
+      kq1.w - kq2.w,
+      kq1.x - kq2.x,
+      kq1.y - kq2.y,
+      kq1.z - kq2.z
+    );
+  }
+}
+
 class KVector {
   x: number;
   y: number;
@@ -32,7 +70,8 @@ class KVector {
 
 const NONE = "";
 const SPHERE = "SPHERE";
-type Shape = typeof NONE | typeof SPHERE;
+const RECTANGULAR = "RECTANGULAR";
+type Shape = typeof NONE | typeof SPHERE | typeof RECTANGULAR;
 
 class KObject {
   mass: number;
@@ -82,6 +121,20 @@ class KSphere extends KObject {
     super(mass);
     this.radius = radius;
     this.shape = SPHERE;
+  }
+}
+
+class KRectangular extends KObject {
+  width: number;
+  height: number;
+  depth: number;
+
+  constructor(mass: number, width: number, height: number, depth: number) {
+    super(mass);
+    this.width = width;
+    this.height = height;
+    this.depth = depth;
+    this.shape = RECTANGULAR;
   }
 }
 

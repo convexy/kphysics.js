@@ -1,4 +1,27 @@
 "use strict";
+class KQuaternion {
+    constructor(w = 0, x = 0, y = 0, z = 0) {
+        this.w = w;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    set(w, x, y, z) {
+        this.w = w;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    static multiple(a, kq) {
+        return new KQuaternion(a * kq.w, a * kq.x, a * kq.y, a * kq.z);
+    }
+    static sum(kq1, kq2) {
+        return new KQuaternion(kq1.w + kq2.w, kq1.x + kq2.x, kq1.y + kq2.y, kq1.z + kq2.z);
+    }
+    static difference(kq1, kq2) {
+        return new KQuaternion(kq1.w - kq2.w, kq1.x - kq2.x, kq1.y - kq2.y, kq1.z - kq2.z);
+    }
+}
 class KVector {
     constructor(array) {
         this.x = array[0];
@@ -29,6 +52,7 @@ class KVector {
 }
 const NONE = "";
 const SPHERE = "SPHERE";
+const RECTANGULAR = "RECTANGULAR";
 class KObject {
     constructor(mass) {
         this.mass = mass;
@@ -69,6 +93,15 @@ class KSphere extends KObject {
         super(mass);
         this.radius = radius;
         this.shape = SPHERE;
+    }
+}
+class KRectangular extends KObject {
+    constructor(mass, width, height, depth) {
+        super(mass);
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        this.shape = RECTANGULAR;
     }
 }
 function DetectCollision(kobj1, kobj2) {
